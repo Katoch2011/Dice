@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     int compGameScore=0;
     int userTurnScore=0;
     int compTurnScore=0;
-    ImageView image;
+    ImageView diceImage;
     TextView userScore,totalUserScore,compScore,totalCompScore;
     Button roll,hold;
     AlertDialog.Builder builder;
@@ -28,47 +28,46 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        image=(ImageView)findViewById(R.id.imageView);
+        diceImage=(ImageView)findViewById(R.id.imageView);
         userScore=(TextView)findViewById(R.id.userScore);
         compScore=(TextView)findViewById(R.id.compScore);
         totalUserScore=(TextView)findViewById(R.id.totalUserScore);
         totalCompScore=(TextView)findViewById(R.id.totalCompScore);
         roll=(Button)findViewById(R.id.roll);
         hold=(Button)findViewById(R.id.hold);
-
     }
 
     public void onRoll(View view){
         int random=new Random().nextInt(6)+1;
         switch (random){
             case 1:
-                image.setImageResource(R.drawable.dice1);
+                diceImage.setImageResource(R.drawable.dice1);
                 userTurnScore=0;
                 userScore.setText(String.valueOf(userTurnScore));
                 computerTurn();
                 break;
             case 2:
-                image.setImageResource(R.drawable.dice2);
+                diceImage.setImageResource(R.drawable.dice2);
                 userTurnScore+=2;
                 userScore.setText(String.valueOf(userTurnScore));
                 break;
             case 3:
-                image.setImageResource(R.drawable.dice3);
+                diceImage.setImageResource(R.drawable.dice3);
                 userTurnScore+=3;
                 userScore.setText(String.valueOf(userTurnScore));
                 break;
             case 4:
-                image.setImageResource(R.drawable.dice4);
+                diceImage.setImageResource(R.drawable.dice4);
                 userTurnScore+=4;
                 userScore.setText(String.valueOf(userTurnScore));
                 break;
             case 5:
-                image.setImageResource(R.drawable.dice5);
+                diceImage.setImageResource(R.drawable.dice5);
                 userTurnScore+=5;
                 userScore.setText(String.valueOf(userTurnScore));
                 break;
             case 6:
-                image.setImageResource(R.drawable.dice6);
+                diceImage.setImageResource(R.drawable.dice6);
                 userTurnScore+=6;
                 userScore.setText(String.valueOf(userTurnScore));
         }
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
             onReset(null);
         }
         computerTurn();
-
     }
 
     public void onReset(View view){
@@ -110,13 +108,11 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     public void computerTurn(){
-
         compTurnScore=0;
         roll.setEnabled(false);
         hold.setEnabled(false);
         Toast.makeText(this,"Computer's turn",Toast.LENGTH_SHORT).show();
         loop:while(compTurnScore<20) {
-
             int random = new Random().nextInt(6) + 1;
             switch (random) {
                 case 1:
@@ -154,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                     compScore.setText(String.valueOf(compTurnScore));
             }
             handler.postDelayed(runnable,0);
-
         }
 
         roll.setEnabled(true);
@@ -173,12 +168,6 @@ public class MainActivity extends AppCompatActivity {
             builder.setCancelable(true);
             builder.show();
             onReset(null);
-
         }
-
     }
-
-
-
-
 }
