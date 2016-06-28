@@ -1,12 +1,14 @@
 package com.example.priya.dice;
 
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -18,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView image;
     TextView userScore,totalUserScore,compScore,totalCompScore;
     Button roll,hold;
-    Handler handler;
+    AlertDialog.Builder builder;
+
 
 
     @Override
@@ -76,6 +79,15 @@ public class MainActivity extends AppCompatActivity {
         totalUserScore.setText(String.valueOf(userGameScore));
         userTurnScore=0;
         userScore.setText(String.valueOf(userTurnScore));
+        if(userGameScore>=100){
+            builder=new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("WINNER");
+            builder.setMessage("You win");
+            builder.setCancelable(true);
+            builder.show();
+            onReset(null);
+        }
+        computerTurn();
 
     }
 
@@ -90,60 +102,82 @@ public class MainActivity extends AppCompatActivity {
         totalCompScore.setText(String.valueOf(compGameScore));
     }
 
+    Handler handler=new Handler();
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            handler.postDelayed(this,500);
+        }
+    };
     public void computerTurn(){
+
+        compTurnScore=0;
         roll.setEnabled(false);
         hold.setEnabled(false);
-        while(compTurnScore<20) {
+        Toast.makeText(this,"Computer's turn",Toast.LENGTH_SHORT).show();
+        loop:while(compTurnScore<20) {
+
             int random = new Random().nextInt(6) + 1;
             switch (random) {
                 case 1:
-                    image.setImageResource(R.drawable.dice1);
-                    compTurnScore=0;
+                    //image.setImageResource(R.drawable.dice1);
+                    //compTurnScore=0;
                     roll.setEnabled(true);
                     hold.setEnabled(true);
                     compScore.setText(String.valueOf(compTurnScore));
-                    break;
+                    Toast.makeText(this,"Computer hit zero.",Toast.LENGTH_SHORT).show();
+                    break loop;
+
                 case 2:
-                    image.setImageResource(R.drawable.dice2);
+                    //image.setImageResource(R.drawable.dice2);
                     compTurnScore += 2;
                     compScore.setText(String.valueOf(compTurnScore));
                     break;
                 case 3:
-                    image.setImageResource(R.drawable.dice3);
+                    //image.setImageResource(R.drawable.dice3);
                     compTurnScore += 3;
                     compScore.setText(String.valueOf(compTurnScore));
                     break;
                 case 4:
-                    image.setImageResource(R.drawable.dice4);
+                    //image.setImageResource(R.drawable.dice4);
                     compTurnScore += 4;
                     compScore.setText(String.valueOf(compTurnScore));
                     break;
                 case 5:
-                    image.setImageResource(R.drawable.dice5);
+                    //image.setImageResource(R.drawable.dice5);
                     compTurnScore += 5;
                     compScore.setText(String.valueOf(compTurnScore));
                     break;
                 case 6:
-                    image.setImageResource(R.drawable.dice6);
+                    //image.setImageResource(R.drawable.dice6);
                     compTurnScore += 6;
                     compScore.setText(String.valueOf(compTurnScore));
             }
-            new Runnable() {
-                @Override
-                public void run() {
-                    handler.postDelayed(this,500);
-                }
-            };
+            handler.postDelayed(runnable,0);
+
         }
 
         roll.setEnabled(true);
         hold.setEnabled(true);
-        compGameScore+=compTurnScore;
-        totalCompScore.setText(String.valueOf(compGameScore));
-        compTurnScore=0;
+        if(compTurnScore>=20) {
+            compGameScore += compTurnScore;
+            totalCompScore.setText(String.valueOf(compGameScore));
+        }
+
+        //compTurnScore=0;
         compScore.setText(String.valueOf(compTurnScore));
+        if(compGameScore>=100){
+            builder=new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("WINNER");
+            builder.setMessage("Computer wins the game.");
+            builder.setCancelable(true);
+            builder.show();
+            onReset(null);
+
+        }
 
     }
+
 
 
 
